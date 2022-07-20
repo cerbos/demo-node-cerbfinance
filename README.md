@@ -25,9 +25,9 @@ This repo contains a basic node express app server which has a dummy database of
 
 There are 3 versions of this server in seperate files, to run each:
 
-- `node app.step1.js` is the basic server with no permissiosn checks
-- `node app.step2.js` is the server with permissions logic hardcoded into the app
-- `node app.step3.js` is the server with permissions being handled by Cerbos. This makes use of the Demo PDP from [this playground instance](https://play.cerbos.dev/p/XhkOi82fFKk3YW60e2c806Yvm0trKEje) which holds the policies.
+- `node app.basic.js` is the basic server with no permissiosn checks
+- `node app.hardcoded.js` is the server with permissions logic hardcoded into the app
+- `node app.cerbos.js` is the server with permissions being handled by Cerbos. This makes use of the Demo PDP from [this playground instance](https://play.cerbos.dev/p/XhkOi82fFKk3YW60e2c806Yvm0trKEje) which holds the policies.
 
 Each server runs on port `8000`.
 
