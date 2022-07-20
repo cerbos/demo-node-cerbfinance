@@ -2,10 +2,16 @@ const express = require("express");
 const { users, expenses } = require("./db");
 const { GRPC } = require("@cerbos/grpc");
 
+// Playground Demo PDP
 const cerbos = new GRPC("demo-pdp.cerbos.cloud", {
   tls: true,
   playgroundInstance: "XhkOi82fFKk3YW60e2c806Yvm0trKEje",
 });
+
+// Local PDP
+// const cerbos = new GRPC("localhost:3593", {
+//   tls: false,
+// });
 
 const app = express();
 app.use(express.json());
