@@ -33,7 +33,7 @@ Each server runs on port `8000`.
 
 ## Calling the service
 
-Authentication is emulated via passing the user value in a `Authentication` header. The users built into the demo database are:
+Authentication is emulated via passing the user value in a `Authorization` header. The users built into the demo database are:
 
 | User | Roles | Department | Region |
 | ---  | --- | --- | --- |
