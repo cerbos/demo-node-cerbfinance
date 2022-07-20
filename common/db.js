@@ -72,6 +72,17 @@ const expenses = [
       approvedBy: "joe",
     },
   },
+  {
+    id: "expense3",
+    attr: {
+      ownerId: "joe",
+      createdAt: "2021-10-01T10:00:00.021-05:00",
+      vendor: "Vortex Solar",
+      region: "EMEA",
+      amount: 2421.12,
+      status: "OPEN",
+    },
+  },
 ];
 
 module.exports = {

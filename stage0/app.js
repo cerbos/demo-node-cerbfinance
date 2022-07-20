@@ -1,5 +1,5 @@
 const express = require("express");
-const { users, expenses } = require("./db");
+const { users, expenses } = require("../common/db");
 
 const app = express();
 app.use(express.json());
