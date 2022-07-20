@@ -1,5 +1,5 @@
 const express = require("express");
-const { users, expenses } = require("../common/db");
+const { users, expenses } = require("./db");
 
 const app = express();
 app.use(express.json());
@@ -7,7 +7,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   const user = users.find((u) => u.id === req.headers["authorization"]);
   if (!user) {
-    res.status(401).send("Unauthorized");
+    return res.status(401).json({ error: "Unauthorized" });
   } else {
     req.user = user;
     next();
@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.json({
-    message: "Cerbforce is running",
+    message: "CerbFinance is running",
   });
 });
 
@@ -26,15 +26,21 @@ app.get("/expenses", (req, res) => {
 
 app.get("/expenses/:id", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
-  if (!expense) return res.status(404).send("Expense not found");
+  if (!expense) return res.status(404).json({ error: "Expense not found" });
   res.json(expense);
 });
 
 app.post("/expenses/:id/approve", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
-  if (!expense) return res.status(404).send("Expense not found");
-  expense.attr.status = "APPROVED";
-  expense.attr.approvedBy = req.user.id;
+  if (!expense) return res.status(404).json({ error: "Expense not found" });
+  expense.attributes.status = "APPROVED";
+  expense.attributes.approvedBy = req.user.id;
+  res.json(expense);
+});
+
+app.delete("/expenses/:id", (req, res) => {
+  const expense = expenses.find((expense) => expense.id === req.params.id);
+  if (!expense) return res.status(404).json({ error: "Expense not found" });
   res.json(expense);
 });
 

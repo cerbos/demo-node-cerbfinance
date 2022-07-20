@@ -1,11 +1,65 @@
-# Expenses System
+# **CerbFinance** System
 
+CerbFinance is a expenses tracking system used companies to submit, track and approve expenses.
+
+It has 5 different user roles:
+
+- User - regular users who submit expenses
+- Region Manager - managers of a particular region eg EMEA or NA
+- Finance - members of the finance team that approve expenses
+- Finance Manager - managers within the finance team
+- Admin - the IT team who manage the system
+
+Inside the system there are 5 actions:
+
+- View an expense
+- View who approved an expense
+- Update an expense
+- Approve an expense
+- Delete an expense
+
+
+## The Server
+
+This repo contains a basic node express app server which has a dummy database of users and expense resources (see [`db.js`](./db.js)).
+
+There are 3 versions of this server in seperate files, to run each:
+
+- `node app.step1.js` is the basic server with no permissiosn checks
+- `node app.step2.js` is the server with permissions logic hardcoded into the app
+- `node app.step3.js` is the server with permissions being handled by Cerbos. This makes use of the Demo PDP from [this playground instance](https://play.cerbos.dev/p/XhkOi82fFKk3YW60e2c806Yvm0trKEje) which holds the policies.
+
+Each server runs on port `8000`.
+
+## Calling the service
+
+Authentication is emulated via passing the user value in a `Authentication` header. The users built into the demo database are:
+
+| User | Roles | Department | Region |
+| ---  | --- | --- | --- |
+| `sajit` | `ADMIN` | IT | |
+| `sally` | `USER` | Sales | EMEA |
+| `joe` | `USER` | Finance | EMEA |
+| `jamie` | `USER`, `MANAGER` | Finance | EMEA |
+| `brock` | `USER`, `MANAGER` | Sales | NA |
+| `john` | `USER`, `MANAGER` | Sales | EMEA |
+| `zeena` | `USER` | Sales | NA |
+
+An example cURL commands would be:
+
+```
+curl -X GET 'http://localhost:8000/expenses/expense1' -H 'Authorization: sally'
+curl -X DELETE 'http://localhost:8000/expenses/expense1' -H 'Authorization: sally'
+curl -X POST 'http://localhost:8000/expenses/expense1/approve' -H 'Authorization: sally'
+```
 
 ## Permissions Logic
-
-| Role      | View Expense | View Expense Approver | Update Expense | Approve Expense |
-| ----------- | ----------- | --- | --- | --- |
-| Admin     | Yes          | Yes | Yes | Yes |
-| User      | IF they created the expense | __IF__ they created the expense __AND__ it is APPROVED  | __IF__ they created the expense __AND__ status is OPEN  | __IF__ they are in the Finance department __AND__ it is OPEN __AND__ they are not the owner |
-|           | __IF__ they are in the finance department         | __IF__ they are in the finance department      | 
-|           | __IF__ they are the manager for the region the expense was created for    |
+These logic for who can do what is as follows:
+ 
+| Role      | View Expense | View Expense Approver | Update Expense | Approve Expense | Delete Expense |
+| ----------- | ----------- | --- | --- | --- | --- |
+| Admin     | Yes          | Yes | Yes | Yes | Yes |
+| User      | IF they created the expense | __IF__ they created the expense __AND__ it is APPROVED  | __IF__ they created the expense __AND__ status is OPEN  | No | __IF__ they created the expense __AND__ status is OPEN __AND__ it was created in the last hour |
+| Region Manager |  __IF__ they are the manager for the region the expense was created for | No | No | No | No |
+| Finance | Yes | Yes | No | __IF__ they did not create the expense __AND__ amount <$1000 | No |
+| Finance Manager | Yes | Yes | No | __IF__ they did not create the expense | Yes |
