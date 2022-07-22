@@ -30,17 +30,24 @@ app.get("/expenses/:id", (req, res) => {
   res.json(expense);
 });
 
+app.patch("/expenses/:id", (req, res) => {
+  const expense = expenses.find((expense) => expense.id === req.params.id);
+  if (!expense) return res.status(404).json({ error: "Expense not found" });
+  // do the patch here
+  res.json(expense);
+});
+
 app.post("/expenses/:id/approve", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
-  expense.attributes.status = "APPROVED";
-  expense.attributes.approvedBy = req.user.id;
+  // do the approve here
   res.json(expense);
 });
 
 app.delete("/expenses/:id", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
+  // do the delete here
   res.json(expense);
 });
 

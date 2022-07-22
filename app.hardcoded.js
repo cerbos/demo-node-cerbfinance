@@ -58,6 +58,31 @@ app.get("/expenses/:id", (req, res) => {
   return res.status(401).json({ error: "Unauthorized" });
 });
 
+app.patch("/expenses/:id", (req, res) => {
+  const expense = expenses.find((expense) => expense.id === req.params.id);
+  if (!expense) return res.status(404).json({ error: "Expense not found" });
+
+  const canPatch = false;
+  // Admins can do everything
+  if (req.user.roles.includes("ADMIN")) {
+    canPatch = true;
+  } else if (req.user.roles.includes("USER")) {
+    // Users can only patch their own expense if OPEN
+    if (
+      expense.attributes.ownerId === req.user.id &&
+      expense.attributes.status === "OPEN"
+    ) {
+      canPatch = true;
+    }
+  }
+  if (canPatch) {
+    // do the patch here
+    return res.json(expense);
+  } else {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+});
+
 app.post("/expenses/:id/approve", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
@@ -82,8 +107,6 @@ app.post("/expenses/:id/approve", (req, res) => {
 
   if (canApprove) {
     // do the approve here
-    // expense.attributes.status = "APPROVED";
-    // expense.attributes.approvedBy = req.user.id;
     return res.json(expense);
   } else {
     return res.status(401).json({ error: "Unauthorized" });

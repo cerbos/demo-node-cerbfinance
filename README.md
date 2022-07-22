@@ -43,9 +43,9 @@ Authentication is emulated via passing the user value in a `Authorization` heade
 | `sally` | `USER` | Sales | EMEA |
 | `joe` | `USER` | Finance | EMEA |
 | `jamie` | `USER`, `MANAGER` | Finance | EMEA |
-| `brock` | `USER`, `MANAGER` | Sales | NA |
+<!-- | `brock` | `USER`, `MANAGER` | Sales | NA |
 | `john` | `USER`, `MANAGER` | Sales | EMEA |
-| `zeena` | `USER` | Sales | NA |
+| `zeena` | `USER` | Sales | NA | -->
 
 ### Expenses
 Note: Relative created at values are based on server start time (in order to simulate conditions)
@@ -56,7 +56,7 @@ Note: Relative created at values are based on server start time (in order to sim
 | `expense2` | Two hours ago | `sally` | EMEA | $2500 | `APPROVED` |
 | `expense3` | Five minutes ago | `sally` | EMEA | $1200 | `OPEN` |
 | `expense4` | 2021-10-01 | `joe` | EMEA | $2421 | `OPEN` |
-| `expense5` | Two hours ago | `joe` | EMEA | $2500 | `REJECTED` |
+| `expense5` | Two hours ago | `sally` | EMEA | $2500 | `REJECTED` |
 
 An example cURL commands would be:
 
@@ -77,3 +77,27 @@ These logic for who can do what is as follows:
 | Finance | Yes | Yes | No | __IF__ they did not create the expense __AND__ amount <$1000 | No |
 | Finance Manager | Yes | Yes | No | __IF__ they did not create the expense | Yes |
 
+## Expected Results
+
+| User/Expense | Action | `expense1` | `expense2` | `expense3` | `expense4` | `expense5`
+| ------- | ----------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- |
+| `sajit` | `view`            | Yes | Yes | Yes | Yes | Yes |
+|         | `view:approver`   | Yes | Yes | Yes | Yes | Yes |
+|         | `update`          | Yes | Yes | Yes | Yes | Yes |
+|         | `approve`         | Yes | Yes | Yes | Yes | Yes |
+|         | `delete`          | Yes | Yes | Yes | Yes | Yes |
+| `sally` | `view`            | Yes | Yes | Yes | No  | Yes |
+|         | `view:approver`   | No  | Yes | No  | No  | No  |
+|         | `update`          | Yes | No  | Yes | No  | No  |
+|         | `approve`         | No  | No  | No  | No  | No  |
+|         | `delete`          | No  | No  | Yes | No  | No  |
+| `joe`   | `view`            | Yes | Yes | Yes | Yes | Yes |
+|         | `view:approver`   | Yes | Yes | Yes | Yes | Yes |
+|         | `update`          | No  | No  | No  | Yes | No  |
+|         | `approve`         | Yes | No  | No  | No  | No  |
+|         | `delete`          | No  | No  | Yes | No  | No  |
+| `jamie` | `view`            | Yes | Yes | Yes | Yes | Yes |
+|         | `view:approver`   | Yes | Yes | Yes | Yes | Yes |
+|         | `update`          | No  | No  | No  | No  | No  |
+|         | `approve`         | Yes | Yes | Yes | Yes | Yes |
+|         | `delete`          | Yes | Yes | Yes | Yes | Yes |

@@ -59,6 +59,27 @@ app.get("/expenses/:id", async (req, res) => {
   return res.status(401).json({ error: "Unauthorized" });
 });
 
+app.patch("/expenses/:id", async (req, res) => {
+  const expense = expenses.find((expense) => expense.id === req.params.id);
+  if (!expense) return res.status(404).json({ error: "Expense not found" });
+
+  const decision = await cerbos.checkResource({
+    principal: req.user,
+    resource: {
+      kind: "expense",
+      ...expense,
+    },
+    actions: ["update"],
+  });
+
+  if (decision.isAllowed("update")) {
+    // do the patch here
+    return res.json(expense);
+  } else {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+});
+
 app.post("/expenses/:id/approve", async (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
@@ -74,8 +95,6 @@ app.post("/expenses/:id/approve", async (req, res) => {
 
   if (decision.isAllowed("approve")) {
     // do the approve here
-    // expense.attributes.status = "APPROVED";
-    // expense.attributes.approvedBy = req.user.id;
     return res.json(expense);
   }
   return res.status(401).json({ error: "Unauthorized" });
