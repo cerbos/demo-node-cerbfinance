@@ -62,6 +62,7 @@ An example cURL commands would be:
 
 ```
 curl -X GET 'http://localhost:8000/expenses/expense1' -H 'Authorization: sally'
+curl -X PATCH 'http://localhost:8000/expenses/expense1' -H 'Authorization: sally'
 curl -X DELETE 'http://localhost:8000/expenses/expense1' -H 'Authorization: sally'
 curl -X POST 'http://localhost:8000/expenses/expense1/approve' -H 'Authorization: sally'
 ```
