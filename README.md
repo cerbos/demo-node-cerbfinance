@@ -72,33 +72,33 @@ These logic for who can do what is as follows:
  
 | Role      | View Expense | View Expense Approver | Update Expense | Approve Expense | Delete Expense |
 | ----------- | ----------- | --- | --- | --- | --- |
-| Admin     | Yes          | Yes | Yes | Yes | Yes |
-| User      | IF they created the expense | __IF__ they created the expense __AND__ it is APPROVED  | __IF__ they created the expense __AND__ status is OPEN  | No | __IF__ they created the expense __AND__ status is OPEN __AND__ it was created in the last hour |
-| Region Manager |  __IF__ they are the manager for the region the expense was created for | No | No | No | No |
-| Finance | Yes | Yes | No | __IF__ they did not create the expense __AND__ amount <$1000 | No |
-| Finance Manager | Yes | Yes | No | __IF__ they did not create the expense | Yes |
+| Admin     | ✅          | ✅ | ✅ | ✅ | ✅ |
+| User      | IF they created the expense | __IF__ they created the expense __AND__ it is APPROVED  | __IF__ they created the expense __AND__ status is OPEN  | ❌ | __IF__ they created the expense __AND__ status is OPEN __AND__ it was created in the last hour |
+| Region Manager |  __IF__ they are the manager for the region the expense was created for | ❌ | ❌ | ❌ | ❌ |
+| Finance | ✅ | ✅ | ❌ | __IF__ they did not create the expense __AND__ amount <$1000 | ❌ |
+| Finance Manager | ✅ | ✅ | ❌ | __IF__ they did not create the expense | ✅ |
 
 ## Expected Results
 
 | User/Expense | Action | `expense1` | `expense2` | `expense3` | `expense4` | `expense5`
 | ------- | ----------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- |
-| `sajit` | `view`            | Yes | Yes | Yes | Yes | Yes |
-|         | `view:approver`   | Yes | Yes | Yes | Yes | Yes |
-|         | `update`          | Yes | Yes | Yes | Yes | Yes |
-|         | `approve`         | Yes | Yes | Yes | Yes | Yes |
-|         | `delete`          | Yes | Yes | Yes | Yes | Yes |
-| `sally` | `view`            | Yes | Yes | Yes | No  | Yes |
-|         | `view:approver`   | No  | Yes | No  | No  | No  |
-|         | `update`          | Yes | No  | Yes | No  | No  |
-|         | `approve`         | No  | No  | No  | No  | No  |
-|         | `delete`          | No  | No  | Yes | No  | No  |
-| `joe`   | `view`            | Yes | Yes | Yes | Yes | Yes |
-|         | `view:approver`   | Yes | Yes | Yes | Yes | Yes |
-|         | `update`          | No  | No  | No  | Yes | No  |
-|         | `approve`         | Yes | No  | No  | No  | No  |
-|         | `delete`          | No  | No  | Yes | No  | No  |
-| `jamie` | `view`            | Yes | Yes | Yes | Yes | Yes |
-|         | `view:approver`   | Yes | Yes | Yes | Yes | Yes |
-|         | `update`          | No  | No  | No  | No  | No  |
-|         | `approve`         | Yes | Yes | Yes | Yes | Yes |
-|         | `delete`          | Yes | Yes | Yes | Yes | Yes |
+| `sajit` | `view`            | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `view:approver`   | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `update`          | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `approve`         | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `delete`          | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `sally` | `view`            | ✅ | ✅ | ✅ | ❌  | ✅ |
+|         | `view:approver`   | ❌  | ✅ | ❌  | ❌  | ❌  |
+|         | `update`          | ✅ | ❌  | ✅ | ❌  | ❌  |
+|         | `approve`         | ❌  | ❌  | ❌  | ❌  | ❌  |
+|         | `delete`          | ❌  | ❌  | ✅ | ❌  | ❌  |
+| `joe`   | `view`            | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `view:approver`   | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `update`          | ❌  | ❌  | ❌  | ✅ | ❌  |
+|         | `approve`         | ✅ | ❌  | ❌  | ❌  | ❌  |
+|         | `delete`          | ❌  | ❌  | ✅ | ❌  | ❌  |
+| `jamie` | `view`            | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `view:approver`   | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `update`          | ❌  | ❌  | ❌  | ❌  | ❌  |
+|         | `approve`         | ✅ | ✅ | ✅ | ✅ | ✅ |
+|         | `delete`          | ✅ | ✅ | ✅ | ✅ | ✅ |
