@@ -108,7 +108,7 @@ app.delete("/expenses/:id", async (req, res) => {
     actions: ["delete"],
   });
 
-  if (decision.allAllowed("delete")) {
+  if (decision.isAllowed("delete")) {
     // do the deletion here
     return res.json({
       message: "expense deleted",

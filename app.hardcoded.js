@@ -31,7 +31,7 @@ app.get("/expenses/:id", (req, res) => {
     // Users can see their own expense and who approved it if it has been approved
     if (expense.attributes.ownerId === req.user.id) {
       if (expense.attributes.status != "APPROVED") {
-        delete expense.attributes.approvedBy;
+        // delete expense.attributes.approvedBy;
       }
       return res.json(expense);
     }
@@ -57,7 +57,7 @@ app.patch("/expenses/:id", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
 
-  const canPatch = false;
+  let canPatch = false;
   // Admins can do everything
   if (req.user.roles.includes("ADMIN")) {
     canPatch = true;
@@ -82,7 +82,7 @@ app.post("/expenses/:id/approve", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
 
-  const canApprove = false;
+  let canApprove = false;
 
   // Admins can do everything
   if (req.user.roles.includes("ADMIN")) {
@@ -112,7 +112,7 @@ app.delete("/expenses/:id", (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
 
-  const canDelete = false;
+  let canDelete = false;
 
   // Admins can do everything
   if (req.user.roles.includes("ADMIN")) {
