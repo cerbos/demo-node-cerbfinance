@@ -35,6 +35,8 @@ Each server runs on port `8000`.
 
 Authentication is emulated via passing the user value in a `Authorization` header. The users built into the demo database are:
 
+### Users
+
 | User | Roles | Department | Region |
 | ---  | --- | --- | --- |
 | `sajit` | `ADMIN` | IT | |
@@ -44,6 +46,17 @@ Authentication is emulated via passing the user value in a `Authorization` heade
 | `brock` | `USER`, `MANAGER` | Sales | NA |
 | `john` | `USER`, `MANAGER` | Sales | EMEA |
 | `zeena` | `USER` | Sales | NA |
+
+### Expenses
+Note: Relative created at values are based on server start time (in order to simulate conditions)
+
+| ID | Created At | Owner | Region | Amount | Status | 
+| -- | --------- | --- | --- | --- | --- |
+| `expense1` | Two months ago | `sally` | EMEA | $500 | `OPEN` |
+| `expense2` | Two hours ago | `sally` | EMEA | $2500 | `APPROVED` |
+| `expense3` | Five minutes ago | `sally` | EMEA | $1200 | `OPEN` |
+| `expense4` | 2021-10-01 | `joe` | EMEA | $2421 | `OPEN` |
+| `expense5` | Two hours ago | `joe` | EMEA | $2500 | `REJECTED` |
 
 An example cURL commands would be:
 
@@ -63,3 +76,4 @@ These logic for who can do what is as follows:
 | Region Manager |  __IF__ they are the manager for the region the expense was created for | No | No | No | No |
 | Finance | Yes | Yes | No | __IF__ they did not create the expense __AND__ amount <$1000 | No |
 | Finance Manager | Yes | Yes | No | __IF__ they did not create the expense | Yes |
+
