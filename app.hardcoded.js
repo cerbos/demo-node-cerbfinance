@@ -30,11 +30,10 @@ app.get("/expenses/:id", (req, res) => {
   } else if (req.user.roles.includes("USER")) {
     // Users can see their own expense and who approved it if it has been approved
     if (expense.attributes.ownerId === req.user.id) {
-      const result = Object.assign({}, expense);
-      if (result.attributes.status != "APPROVED") {
-        delete result.attributes.approvedBy;
+      if (expense.attributes.status != "APPROVED") {
+        delete expense.attributes.approvedBy;
       }
-      return res.json(result);
+      return res.json(expense);
     }
 
     // Region managers can see expenses from their region

@@ -126,6 +126,18 @@ const expenses = [
 ];
 
 module.exports = {
-  users,
-  expenses,
+  users: {
+    find: (filter) => {
+      const user = users.find(filter);
+      if (!user) return null;
+      return Object.assign({}, user);
+    },
+  },
+  expenses: {
+    find: (filter) => {
+      const expense = expenses.find(filter);
+      if (!expense) return null;
+      return Object.assign({}, expense);
+    },
+  },
 };

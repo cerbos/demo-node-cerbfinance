@@ -46,11 +46,10 @@ app.get("/expenses/:id", async (req, res) => {
   });
 
   if (decision.isAllowed("view")) {
-    const result = Object.assign({}, expense);
     if (!decision.isAllowed("view:approver")) {
-      delete result.attributes.approvedBy;
+      delete expense.attributes.approvedBy;
     }
-    return res.json(result);
+    return res.json(expense);
   }
   return res.status(401).json({ error: "Unauthorized" });
 });
