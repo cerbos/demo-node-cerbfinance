@@ -32,10 +32,6 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/expenses", (req, res) => {
-  res.json(expenses);
-});
-
 app.get("/expenses/:id", async (req, res) => {
   const expense = expenses.find((expense) => expense.id === req.params.id);
   if (!expense) return res.status(404).json({ error: "Expense not found" });
